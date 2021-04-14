@@ -14,6 +14,7 @@ plt.xlabel("Number of steps before measurement")
 plt.ylabel("Shannon entropy")
 plt.legend()
 plt.savefig('data/graphs/dipendenza_numero_misure' + str(time.time()) + ".png")
+
 plt.show()
 
 
