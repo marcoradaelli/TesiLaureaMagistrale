@@ -7,8 +7,10 @@ import physics_utilities as ph
 import anello as an
 
 class walker:
-    def __init__(self, anello_ospite, posizione_iniziale, moneta_iniziale, depolarizzazione):
+    def __init__(self, anello_ospite, posizione_iniziale, moneta_iniziale, operatori_kraus=None):
         # L'anello va passato come oggetto.
+        if operatori_kraus is None:
+            operatori_kraus = []
         self.anello_ospite = anello_ospite
 
         # La posizione iniziale si può passare sia come vettore che come numero.
@@ -50,17 +52,29 @@ class walker:
         coin_flip = np.cos(theta) * proj_up - 1j * np.sin(theta) * mix_up_down - 1j * np.sin(theta) * mix_down_up + np.cos( theta) * proj_down
         total_coin_flip = np.kron(np.eye(self.anello_ospite.numero_punti), coin_flip)
 
+        # Operatore totale di passo.
         self.operatore_passo = conditional_shift.dot(total_coin_flip)
+
+        # Occorre fornire gli operatori di Kraus per la mappa quantistica che si vuole applicare.
+        # Gli operatori vanni forniti come Python list.
+        self.operatori_kraus = operatori_kraus
+
         # print("WK: Preparazione operatori riuscita.")
 
     def passo(self):
-        self.stato_totale = self.operatore_passo.dot(self.stato_totale)
-        # print("WK: Eseguito passo.")
+        # Prima di tutto applica gli operatori di Kraus sullo stato.
+        accu_matrice_densita = np.zeros((self.anello_ospite.numero_punti * 2, self.anello_ospite.numero_punti * 2))
+        for kraus in self.operatori_kraus:
+            # getH è la funzione di "daga" (= hermitian conjugate) di numpy.
+            accu_matrice_densita = accu_matrice_densita + kraus.dot(self.matrice_densita.dot(kraus.getH()))
+        self.matrice_densita = accu_matrice_densita
+
+        # Applica l'evoluzione unitaria.
+        self.matrice_densita = self.operatore_passo.dot(self.matrice_densita.dot(self.operatore_passo.getH()))
 
     def esegui_misura(self):
         # Kernel del Montecarlo. Uso una tecnica accept-reject.
         # Estraggo x uniformemente tra i punti.
-        # TODO: provare con random.choices, fornendo i pesi.
         flag_individuato = False
         while not flag_individuato:
             x = random.randrange(0,self.anello_ospite.numero_punti)
@@ -81,6 +95,7 @@ class walker:
             vettore_posizioni[k] = 1.
             proj_posizione = np.outer(vettore_posizioni, vettore_posizioni)
             proj_tot_posizione = np.kron(proj_posizione, np.eye(2))
-            distribuzione[k] = pow(np.linalg.norm(proj_tot_posizione.dot(self.stato_totale)),2)
+            # In formalismo matriciale occorre usare la traccia.
+            distribuzione[k] = np.trace(proj_tot_posizione.dot(self.matrice_densita))
         return distribuzione, max(distribuzione)
 
