@@ -1,4 +1,4 @@
-import protocollo_anello
+from protocolli import protocollo_anello
 import random
 import time
 import numpy as np

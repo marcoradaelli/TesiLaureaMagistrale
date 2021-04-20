@@ -1,4 +1,4 @@
-# Classi per la simulazione dei Quantum Random Walks, usando il formalismo della matrice densit.
+# Classi per la simulazione dei Quantum Random Walks, usando il formalismo della matrice densità.
 
 import numpy as np
 import random

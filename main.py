@@ -1,10 +1,7 @@
 import numpy as np
 import random
-from matplotlib import pyplot as plt
-import qrw
-import crw
-import physics_utilities as ph
-import analisi_randomness as ar
+from walks_core import crw, qrw, physics_utilities as ph
+from strumenti_analisi import analisi_randomness as ar
 
 # Parametri della simulazione.
 numero_punti_anello = 33
@@ -39,8 +36,8 @@ for run in range(0,numero_run_montecarlo):
     for iterazione in range(0, lunghezza_stringa):
         # Creo due walker identici, uno quantistico e uno classico.
         walker_quantistico = qrw.walker(anello_ospite=anello_quantistico,
-                                    posizione_iniziale=posizione_attuale_quantistico,
-                                    moneta_iniziale=moneta_iniziale)
+                                        posizione_iniziale=posizione_attuale_quantistico,
+                                        moneta_iniziale=moneta_iniziale)
         walker_classico = crw.walker(anello_ospite=anello_classico,
                                      posizione_iniziale=posizione_attuale_classico)
         # Faccio evolvere entrambi i walker per il numero di passi previsto.
