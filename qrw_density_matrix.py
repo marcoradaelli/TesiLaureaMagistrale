@@ -1,14 +1,10 @@
-# Classi per la simulazione dei Quantum Random Walks.
+# Classi per la simulazione dei Quantum Random Walks, usando il formalismo della matrice densit.
 
 import numpy as np
 import random
 
 import physics_utilities as ph
-
-class anello:
-    def __init__(self, numero_punti):
-        self.numero_punti = numero_punti
-        # print("AN: Creato anello di ", self.numero_punti, " punti.")
+import anello as an
 
 class walker:
     def __init__(self, anello_ospite, posizione_iniziale, moneta_iniziale, depolarizzazione):
@@ -23,9 +19,9 @@ class walker:
             stato_posizione_iniziale = posizione_iniziale
 
         # Vettore di stato.
-        self.stato_totale = np.kron(stato_posizione_iniziale, moneta_iniziale)
-
-        # print("WK: Impostazione condizioni iniziali riuscita.")
+        self.vettore_stato = np.kron(stato_posizione_iniziale, moneta_iniziale)
+        # Matrice di stato.
+        self.matrice_densita = np.outer(self.vettore_stato, self.vettore_stato)
 
         # Prepara gli operatori di cammino.
         coin_up = np.array([1, 0])

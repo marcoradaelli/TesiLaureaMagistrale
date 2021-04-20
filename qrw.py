@@ -11,7 +11,7 @@ class anello:
         # print("AN: Creato anello di ", self.numero_punti, " punti.")
 
 class walker:
-    def __init__(self, anello_ospite, posizione_iniziale, moneta_iniziale, depolarizzazione):
+    def __init__(self, anello_ospite, posizione_iniziale, moneta_iniziale):
         # L'anello va passato come oggetto.
         self.anello_ospite = anello_ospite
 
