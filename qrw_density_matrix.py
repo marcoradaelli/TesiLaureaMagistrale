@@ -7,7 +7,7 @@ import physics_utilities as ph
 import anello as an
 
 class walker:
-    def __init__(self, anello_ospite, posizione_iniziale, moneta_iniziale, operatori_kraus=None):
+    def __init__(self, anello_ospite: an.anello, posizione_iniziale: int, moneta_iniziale: np.array, operatori_kraus:list=None):
         # L'anello va passato come oggetto.
         if operatori_kraus is None:
             operatori_kraus = []
@@ -72,7 +72,7 @@ class walker:
         # Applica l'evoluzione unitaria.
         self.matrice_densita = self.operatore_passo.dot(self.matrice_densita.dot(self.operatore_passo.getH()))
 
-    def esegui_misura(self):
+    def esegui_misura(self) -> float:
         # Kernel del Montecarlo. Uso una tecnica accept-reject.
         # Estraggo x uniformemente tra i punti.
         flag_individuato = False
@@ -87,7 +87,7 @@ class walker:
         # print("WK: Estratto valore ", x, " da misura.")
         return x
 
-    def ottieni_distribuzione_probabilita(self):
+    def ottieni_distribuzione_probabilita(self) -> (np.array,float):
         # Calcola la ddp associata alle posizioni correnti.
         distribuzione = np.zeros(self.anello_ospite.numero_punti)
         for k in range(0, self.anello_ospite.numero_punti):
