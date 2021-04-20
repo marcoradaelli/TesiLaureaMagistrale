@@ -3,7 +3,7 @@
 import numpy as np
 import random
 
-import physics_utilities as ph
+from walks_core import physics_utilities as ph
 
 class anello:
     def __init__(self, numero_punti):

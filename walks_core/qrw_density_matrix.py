@@ -3,8 +3,8 @@
 import numpy as np
 import random
 
-import physics_utilities as ph
-import anello as an
+from walks_core import physics_utilities as ph
+from walks_core import anello as an
 
 class walker:
     def __init__(self, anello_ospite: an.anello, posizione_iniziale: int, moneta_iniziale: np.array, operatori_kraus:list=None):
@@ -65,12 +65,12 @@ class walker:
         # Prima di tutto applica gli operatori di Kraus sullo stato.
         accu_matrice_densita = np.zeros((self.anello_ospite.numero_punti * 2, self.anello_ospite.numero_punti * 2))
         for kraus in self.operatori_kraus:
-            # getH è la funzione di "daga" (= hermitian conjugate) di numpy.
-            accu_matrice_densita = accu_matrice_densita + kraus.dot(self.matrice_densita.dot(kraus.getH()))
+            # .conj().T è la funzione di "daga" (= hermitian conjugate) di numpy (per gli array!).
+            accu_matrice_densita = accu_matrice_densita + kraus.dot(self.matrice_densita.dot(kraus.conj().T))
         self.matrice_densita = accu_matrice_densita
 
         # Applica l'evoluzione unitaria.
-        self.matrice_densita = self.operatore_passo.dot(self.matrice_densita.dot(self.operatore_passo.getH()))
+        self.matrice_densita = self.operatore_passo.dot(self.matrice_densita.dot(self.operatore_passo.conj().T))
 
     def esegui_misura(self) -> float:
         # Kernel del Montecarlo. Uso una tecnica accept-reject.

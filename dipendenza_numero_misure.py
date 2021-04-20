@@ -19,14 +19,14 @@ out.write("# Timestamp di esecuzione: " + str(time.time()) + "\n")
 tempo_iniziale = time.time()
 
 # Ciclo sul numero di passi da fare prima di una misura.
-for numero_passi_prima_della_misura in range(1,30,1):
+for numero_passi_prima_della_misura in [5,10,20]:
     print("===== AVVIO PER NUMERO PASSI ", numero_passi_prima_della_misura, " =====")
 
     vett_numero_passi.append(numero_passi_prima_della_misura)
     # Creo un esperimento MC per il protocollo anello con il dato numero di passi prima della misura.
     esperimento = protocollo_anello.protocollo_anello(numero_punti_anello=25,
                                                       posizione_iniziale=5,
-                                                      numero_run_montecarlo=100,
+                                                      numero_run_montecarlo=10,
                                                       numero_passi_prima_della_misura=numero_passi_prima_della_misura,
                                                       lunghezza_stringa=100)
     risultati = esperimento.esegui()
