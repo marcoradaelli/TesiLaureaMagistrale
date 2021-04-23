@@ -1,12 +1,21 @@
-# Questa classe descrive un canale depolarizzatore da applicare al coin.
-# L'obiettivo è costruire una lista di operatori di Kraus per il canale.
+# Questa classe descrive i modelli di rumore da applicare.
+# L'obiettivo è costruire una lista di operatori di Kraus per il canale considerato.
+# Il canale è descritto dalla classe astratta canale.
 
 import numpy as np
+import abc
 
-class canale_depolarizzatore:
+class canale:
+    def __init__(self, dimensioni_anello):
+        self.dimensioni_anello  = dimensioni_anello
+    @abc.abstractmethod
+    def lista_operatori_kraus(self) -> list:
+        pass
+
+class canale_depolarizzatore(canale):
     def __init__(self, parametro: float, dimensioni_anello: int):
+        super().__init__(dimensioni_anello)
         self.parametro = parametro
-        self.dimensioni_anello = dimensioni_anello
 
     def lista_operatori_kraus(self) -> list:
         # Definisco le matrici di Pauli.

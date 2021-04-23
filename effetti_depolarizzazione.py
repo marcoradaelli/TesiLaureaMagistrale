@@ -1,5 +1,5 @@
 # In questo codice studio gli effetti dell'inserimento di un canale depolarizzatore.
-from walks_core import canale_depolarizzatore as ch
+from walks_core import operatori_kraus as ch
 from protocolli import protocollo_anello_density_matrix
 import random
 import time
@@ -13,12 +13,12 @@ vett_average_classico = []
 vett_devstd_quantistico = []
 vett_devstd_classico = []
 
-parametro_depolarizzazione = 0
+parametro_depolarizzazione = 1
 
 # File di output.
 out = open("data/dipendenza_numero_misure_depolarizzato.txt", mode="a")
 out.write(f"# Valore parametro di depolarizzazione: {parametro_depolarizzazione}")
-out.write("$ numero passi prima di misura /// ave quantistico /// devstd quantistico\n")
+out.write("$ numero passi prima di misura /// ave noise /// devstd noise /// ave quantum /// devstd quantum \n")
 out.write("# Timestamp di esecuzione: " + str(time.time()) + "\n")
 tempo_iniziale = time.time()
 
