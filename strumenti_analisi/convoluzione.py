@@ -37,3 +37,10 @@ def diaconis_shashahani_bound(f: np.array, n: int) -> float:
         somma += pow(abs(tdf[i]), 2 * n)
     risultato = 1/2 * np.sqrt(somma)
     return risultato
+
+def entropy_convolution_bound(f: np.array, n: int):
+    p = len(f)
+    diaconis_bound = diaconis_shashahani_bound(f,n)
+    risultato = np.log2(p) - (np.log2(p) + 1) * 2 * diaconis_bound
+
+    return risultato
