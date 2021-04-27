@@ -1,6 +1,6 @@
 import numpy as np
 
-# Questa funzione esegue la convoluzione su Zp di una distribuzione di probabilità, secondo il formalismo
+# Questa funzione esegue la convoluzione su Zp di una distribuzione_quantistica di probabilità, secondo il formalismo
 # di Sahlsten 2019.
 
 def convoluzione_zp(f:np.array, g:np.array) -> np.array:

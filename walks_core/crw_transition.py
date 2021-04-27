@@ -2,7 +2,7 @@
 
 import numpy as np
 import random
-import anello as an
+from walks_core import anello as an
 
 from walks_core import physics_utilities as ph
 
@@ -25,8 +25,8 @@ class walker:
         # Prepara la matrice di transizione.
         self.matrice_transizione = 1/2 * np.eye(anello_ospite.numero_punti,k=1) + 1/2 * np.eye(anello_ospite.numero_punti,k=-1)
         # Correggo per la topologia ad anello.
-        self.matrice_transizione[anello_ospite.numero_punti-1,0] = 1
-        self.matrice_transizione[0,anello_ospite.numero_punti-1] = 1
+        self.matrice_transizione[anello_ospite.numero_punti - 1,0] = 1/2
+        self.matrice_transizione[0, anello_ospite.numero_punti-1] = 1/2
 
     def passo(self):
         self.stato = self.matrice_transizione.dot(self.stato)
@@ -40,7 +40,7 @@ class walker:
             x = random.randrange(0,self.anello_ospite.numero_punti)
             # print("WK: provo valore ", x, ".")
             ddp, max_probabilita = self.ottieni_distribuzione_probabilita()
-            # print("WK: distribuzione ", ddp, ".")
+            # print("WK: distribuzione_quantistica ", ddp, ".")
             y = random.uniform(0,max_probabilita)
             flag_individuato = (y < ddp[x])
         # Alla fine della procedura ottengo quindi un numero x da usare, distribuito secondo la ddp.
