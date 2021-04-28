@@ -3,11 +3,12 @@ import networkx as nx
 from matplotlib import pyplot as plt
 
 class grafo:
-    def __init__(self, matrice_adiacenza: np.array, disegna_grafo = False):
+    def __init__(self, matrice_adiacenza: np.array, disegna_grafo = False, controlla_regolare = False):
         self.matrice_adiacenza = matrice_adiacenza
         self.matrice_adiacenza = matrice_adiacenza
         self.numero_vertici = len(matrice_adiacenza)
-        self.ottieni_grado() # La funzione salva il grado nel membro di classe.
+        if controlla_regolare:
+            self.ottieni_grado() # La funzione salva il grado nel membro di classe.
 
         if disegna_grafo:
             self.disegna_grafo()
@@ -27,7 +28,7 @@ class grafo:
                 raise Exception("Il grafo non è regolare!")
 
         self.grado = candidato_grado
-        return candidato_grado
+        return int(candidato_grado)
 
     def disegna_grafo(self):
         nx_grafo = nx.from_numpy_array(self.matrice_adiacenza)
