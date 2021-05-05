@@ -11,6 +11,7 @@ def logC(x):
         return np.log2(x)
 
 def entropia_shannon(v):
+    v = np.ndarray.flatten(v)
     accu_entropia = 0
     for punto in v:
         accu_entropia += - punto * logC(punto)
@@ -42,3 +43,6 @@ def converti_in_stringa_binaria(vett_risultati):
         # Per funzionamento interno di bin, serve tagliare i primi due caratteri della stringa ritornata,
         stringa_binaria = stringa_binaria + bin(numero)[2:].zfill(quanti_bit)
     return stringa_binaria
+
+def verifica_matrice_unitaria(matrice):
+    return np.allclose(np.eye(len(matrice)), matrice.dot(matrice.T.conj()))
