@@ -61,6 +61,14 @@ class grafo:
 
         return np.array(vettore_nodi)
 
+    def ottieni_laplaciano(self) -> np.array:
+        vett_gradi = self.trova_grado_nodi()
+        matrice_gradi = np.eye(self.numero_vertici)
+        for vertice in range(self.numero_vertici):
+            matrice_gradi[vertice][vertice] = vett_gradi[vertice]
+        laplaciano = matrice_gradi - self.matrice_adiacenza
+        return laplaciano
+
 # Classi figlie per particolari tipi di grafo.
 
 class grafo_anello(grafo):

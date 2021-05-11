@@ -4,9 +4,13 @@ import numpy as np
 import random
 
 from walks_core import physics_utilities as ph
+from Grafi import barr_fleming_kendon as bfk
+
+matrice_hadamard = 1/np.sqrt(2) * np.array([[1,1],[1,-1]])
+matrice_unbiased = 1 / np.sqrt(2) * np.array([[1, -1j], [-1j, 1]])
 
 class walker:
-    def __init__(self, numero_punti_per_dimensione: int):
+    def __init__(self, numero_punti_per_dimensione: int, tipo_moneta:str="hadamard", matrice_flip_moneta = None):
         self.numero_punti_per_dimensione = numero_punti_per_dimensione
 
         # Posizione iniziale.
@@ -27,18 +31,29 @@ class walker:
         
         self.stato_totale = np.kron(stato_posizione_iniziale, stato_moneta_iniziale)
 
-        matrice_hadamard = 1/np.sqrt(2) * np.array([[1,1],[1,-1]])
-        matrice_unbiased = 1/np.sqrt(2) * np.array([[1,-1j],[-1j,1]])
-        matrice_moneta = matrice_unbiased
-        operatore_coin = np.kron(matrice_moneta, matrice_moneta)
+        if tipo_moneta == "hadamard":
+            operatore_coin = np.kron(matrice_hadamard, matrice_hadamard)
+        elif tipo_moneta == "unbiased":
+            operatore_coin = np.kron(matrice_unbiased, matrice_unbiased)
+        elif tipo_moneta == "DFT":
+            operatore_coin = bfk.matrice_coin_fft(4)
+        elif tipo_moneta == "grover":
+            operatore_coin = 1/2 * (np.ones(4) - 2 * np.eye(4))
+        elif tipo_moneta == "personalizzata":
+            if matrice_flip_moneta is None:
+                raise Exception("Matrice di moneta personalizzata non inserita!")
+            operatore_coin = matrice_flip_moneta
+        else:
+            raise Exception("Moneta non riconosciuta!")
+
         identita_posizioni = np.kron(np.eye(numero_punti_per_dimensione),np.eye(numero_punti_per_dimensione))
         self.operatore_totale_coin = np.kron(identita_posizioni,operatore_coin)
 
         print("Matrice di moneta unitaria? ", ph.verifica_matrice_unitaria(self.operatore_totale_coin))
 
         matrice_su = np.eye(numero_punti_per_dimensione, k=1)
-        matrice_su[numero_punti_per_dimensione-1][0] = 1
         matrice_giu = np.eye(numero_punti_per_dimensione, k=-1)
+        matrice_su[numero_punti_per_dimensione - 1][0] = 1
         matrice_giu[0][numero_punti_per_dimensione-1] = 1
         proiettore_su = np.array([[1,0],[0,0]])
         proiettore_giu = np.array([[0,0],[0,1]])
