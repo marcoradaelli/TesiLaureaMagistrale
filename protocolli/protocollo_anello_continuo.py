@@ -1,21 +1,18 @@
 import numpy as np
-from walks_core import crw, qrw, physics_utilities as ph
+from walks_core import crw_continuous as crw, qrw_continuous as qrw, physics_utilities as ph
+from Grafi import grafi
 
 
 class protocollo_anello:
-    def __init__(self, numero_punti_anello, posizione_iniziale, numero_run_montecarlo, numero_passi_prima_della_misura, lunghezza_stringa, delta_moneta = np.pi/4, eta_moneta = 0):
+    def __init__(self, numero_punti_anello, posizione_iniziale, numero_run_montecarlo, tempo_prima_della_misura, lunghezza_stringa, delta_moneta = np.pi/4, eta_moneta = 0):
         self.numero_punti_anello = numero_punti_anello
         self.posizione_iniziale = posizione_iniziale
         self.numero_run_montecarlo = numero_run_montecarlo
-        self.numero_passi_prima_della_misura = numero_passi_prima_della_misura
+        self.tempo_prima_della_misura = tempo_prima_della_misura
         self.lunghezza_stringa = lunghezza_stringa
 
-        # Nel caso quantistico servono dei parametri di moneta iniziali.
-        self.moneta_iniziale = np.array([np.cos(delta_moneta), np.sin(delta_moneta) * np.exp(1j * eta_moneta)])
-
         # Creo un anello classico ed uno quantistico, uguali.
-        self.anello_quantistico = qrw.anello(numero_punti=self.numero_punti_anello)
-        self.anello_classico = crw.anello(numero_punti=self.numero_punti_anello)
+        self.anello = grafi.grafo_anello(numero_punti=numero_punti_anello)
 
         # Crea i vettori per i dati.
         self.risultati_shannon_quantistico = []
@@ -32,18 +29,13 @@ class protocollo_anello:
             posizione_attuale_quantistico = self.posizione_iniziale
             for iterazione in range(0, self.lunghezza_stringa):
                 # Creo due walker identici, uno quantistico e uno classico.
-                walker_quantistico = qrw.walker(anello_ospite=self.anello_quantistico,
-                                                posizione_iniziale=posizione_attuale_quantistico,
-                                                moneta_iniziale=self.moneta_iniziale)
-                walker_classico = crw.walker(anello_ospite=self.anello_classico,
+                walker_quantistico = qrw.walker(grafo_ospite=self.anello,
+                                                posizione_iniziale=posizione_attuale_quantistico)
+                walker_classico = crw.walker(grafo_ospite=self.anello,
                                              posizione_iniziale=posizione_attuale_classico)
-                # Faccio evolvere entrambi i walker per il numero di passi previsto.
-                for evoluzione in range(0, self.numero_passi_prima_della_misura):
-                    walker_quantistico.passo()
-                    walker_classico.passo()
                 # Alla fine delle evoluzioni eseguo una misura su entrambi, e salvo il risultato.
-                misura_quantistica = walker_quantistico.esegui_misura()
-                misura_classica = walker_classico.esegui_misura()
+                misura_quantistica = walker_quantistico.esegui_misura_a_tempo(tempo=self.tempo_prima_della_misura)
+                misura_classica = walker_classico.esegui_misura_a_tempo(tempo=self.tempo_prima_della_misura)
                 stringa_quantistico.append(misura_quantistica)
                 stringa_classico.append(misura_classica)
                 # La nuova posizione iniziale sarà quella finale dell'attuale iterazione, per entrambi i walk.
