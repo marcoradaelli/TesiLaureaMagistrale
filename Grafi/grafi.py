@@ -82,3 +82,8 @@ class grafo_completo(grafo):
     def __init__(self, numero_punti: int, disegna_grafo: bool = False):
         matrice_adiacenza = np.ones((numero_punti, numero_punti)) - np.eye(numero_punti)
         super().__init__(matrice_adiacenza, disegna_grafo=disegna_grafo)
+
+class grafo_linea(grafo):
+    def __init__(self, numero_punti: int, disegna_grafo: bool = False):
+        mmatrice_adiacenza = np.eye(numero_punti, k=-1) + np.eye(numero_punti, k=1)
+        super().__init__(mmatrice_adiacenza, disegna_grafo=disegna_grafo)
