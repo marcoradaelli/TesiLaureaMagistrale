@@ -46,3 +46,25 @@ def converti_in_stringa_binaria(vett_risultati):
 
 def verifica_matrice_unitaria(matrice):
     return np.allclose(np.eye(len(matrice)), matrice.dot(matrice.T.conj()))
+
+def fidelity(d1: list, d2: list) -> float:
+    accu = 0
+
+    if not len(d1) == len(d2):
+        raise Exception("Distribuzioni di diverse dimensioni!")
+
+    for i in range(len(d1)):
+        accu += np.sqrt(d1[i] * d2[i])
+
+    return accu
+
+def kolmogorov_distance(d1:list, d2:list) -> float:
+    accu = 0
+
+    if not len(d1) == len(d2):
+        raise Exception("Distribuzioni di diverse dimensioni!")
+
+    for i in range(len(d1)):
+        accu += np.abs(d1[i] - d2[i])
+
+    return accu

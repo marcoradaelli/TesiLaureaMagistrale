@@ -1,3 +1,4 @@
+import networkx.generators.lattice
 import numpy as np
 import networkx as nx
 from matplotlib import pyplot as plt
@@ -85,5 +86,14 @@ class grafo_completo(grafo):
 
 class grafo_linea(grafo):
     def __init__(self, numero_punti: int, disegna_grafo: bool = False):
-        mmatrice_adiacenza = np.eye(numero_punti, k=-1) + np.eye(numero_punti, k=1)
-        super().__init__(mmatrice_adiacenza, disegna_grafo=disegna_grafo)
+        matrice_adiacenza = np.eye(numero_punti, k=-1) + np.eye(numero_punti, k=1)
+        super().__init__(matrice_adiacenza, disegna_grafo=disegna_grafo)
+
+class grafo_rete(grafo):
+    def __init__(self, numero_punti_per_dimensione: int, disegna_grafo: bool = False):
+        nx_grafo = networkx.generators.lattice.grid_2d_graph(m=numero_punti_per_dimensione,
+                                                             n=numero_punti_per_dimensione,
+                                                             periodic=True)
+        matrice_adiacenza = networkx.to_numpy_array(nx_grafo)
+        print(matrice_adiacenza)
+        super().__init__(matrice_adiacenza, disegna_grafo=disegna_grafo)

@@ -1,6 +1,8 @@
 from protocolli import protocollo_anello_continuo
 import random
 import time
+import numpy as np
+from Grafi import grafi
 
 # Inizializzo il seed del random.
 random.seed(1)
@@ -18,15 +20,19 @@ out.write("$ tempo prima di misura /// ave quantistico /// devstd quantistico"
 out.write("# Timestamp di esecuzione: " + str(time.time()) + "\n")
 tempo_iniziale = time.time()
 
+# grafo = grafi.grafo_anello(numero_punti=25, disegna_grafo=False)
+# grafo = grafi.grafo_rete(numero_punti_per_dimensione=5, disegna_grafo=True)
+grafo = grafi.grafo_completo(numero_punti=25, disegna_grafo=True)
+
 # Ciclo sul numero di passi da fare prima di una misura.
-for tempo_prima_della_misura in range(1,20):
+for tempo_prima_della_misura in np.arange(0.1,3,0.1):
     print("===== AVVIO PER TEMPO ", tempo_prima_della_misura, " =====")
 
     vett_numero_passi.append(tempo_prima_della_misura)
     # Creo un esperimento MC per il protocollo anello con il dato numero di passi prima della misura.
-    esperimento = protocollo_anello_continuo.protocollo_anello(numero_punti_anello=25,
-                                                      posizione_iniziale=5,
-                                                      numero_run_montecarlo=100,
+    esperimento = protocollo_anello_continuo.protocollo_anello(grafo_ospite=grafo,
+                                                      posizione_iniziale=1,
+                                                      numero_run_montecarlo=5,
                                                       tempo_prima_della_misura=tempo_prima_della_misura,
                                                       lunghezza_stringa=100)
     risultati = esperimento.esegui()

@@ -4,15 +4,12 @@ from Grafi import grafi
 
 
 class protocollo_anello:
-    def __init__(self, numero_punti_anello, posizione_iniziale, numero_run_montecarlo, tempo_prima_della_misura, lunghezza_stringa, delta_moneta = np.pi/4, eta_moneta = 0):
-        self.numero_punti_anello = numero_punti_anello
+    def __init__(self, grafo_ospite:grafi.grafo, posizione_iniziale, numero_run_montecarlo, tempo_prima_della_misura, lunghezza_stringa, delta_moneta = np.pi/4, eta_moneta = 0):
+        self.grafo_ospite = grafo_ospite
         self.posizione_iniziale = posizione_iniziale
         self.numero_run_montecarlo = numero_run_montecarlo
         self.tempo_prima_della_misura = tempo_prima_della_misura
         self.lunghezza_stringa = lunghezza_stringa
-
-        # Creo un anello classico ed uno quantistico, uguali.
-        self.anello = grafi.grafo_anello(numero_punti=numero_punti_anello)
 
         # Crea i vettori per i dati.
         self.risultati_shannon_quantistico = []
@@ -29,9 +26,9 @@ class protocollo_anello:
             posizione_attuale_quantistico = self.posizione_iniziale
             for iterazione in range(0, self.lunghezza_stringa):
                 # Creo due walker identici, uno quantistico e uno classico.
-                walker_quantistico = qrw.walker(grafo_ospite=self.anello,
+                walker_quantistico = qrw.walker(grafo_ospite=self.grafo_ospite,
                                                 posizione_iniziale=posizione_attuale_quantistico)
-                walker_classico = crw.walker(grafo_ospite=self.anello,
+                walker_classico = crw.walker(grafo_ospite=self.grafo_ospite,
                                              posizione_iniziale=posizione_attuale_classico)
                 # Alla fine delle evoluzioni eseguo una misura su entrambi, e salvo il risultato.
                 misura_quantistica = walker_quantistico.esegui_misura_a_tempo(tempo=self.tempo_prima_della_misura)
