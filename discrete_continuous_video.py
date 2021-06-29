@@ -5,9 +5,9 @@ from matplotlib import pyplot as plt
 from strumenti_analisi import generatore_video
 
 # E un tempo minimo e massimo e step per il continuo.
-tempo_minimo = 0
-tempo_massimo = 30
-tempo_step = 0.1
+tempo_minimo = 9
+tempo_massimo = 12
+tempo_step = 0.01
 numero_passi_discreto = 30
 
 dimensione_spazio = max([numero_passi_discreto * 10,30])

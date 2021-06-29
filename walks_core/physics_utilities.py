@@ -68,3 +68,52 @@ def kolmogorov_distance(d1:list, d2:list) -> float:
         accu += np.abs(d1[i] - d2[i])
 
     return accu
+
+def media(ddp: list) -> float:
+    accu = 0
+    for pos,el in enumerate(ddp):
+        accu += pos*el
+    return accu
+
+def varianza(ddp: list) -> float:
+    accu = 0
+    valore_medio = media(ddp)
+    for pos,el in enumerate(ddp):
+        accu += pow((pos-valore_medio),2)*el
+    return accu
+
+def devstd(ddp:list) -> float:
+    return np.sqrt(varianza(ddp))
+
+def intervallo_supporto_distribuzione(ddp:list) -> tuple:
+    # Ciclo finché non trovo un valore != 0.
+    counter_min = 0
+    for item in ddp:
+        if item == 0:
+            counter_min += 1
+        else:
+            break
+    counter_max = len(ddp)
+    for item in reversed(ddp):
+        if item == 0:
+            counter_max -= 1
+        else:
+            break
+    return counter_min, counter_max
+
+def distribuzione_uniforme_in_intervallo(dim:int, intervallo:tuple) -> np.array:
+    # Restituisco una distribuzione uniforme su un intervallo ristretto.
+    ddp = np.zeros(dim)
+    min,max = intervallo
+    lunghezza_intervallo = max - min
+    for i in range(min, max):
+        ddp[i] = 1/lunghezza_intervallo
+    return ddp
+
+def entropia_von_neumann(matrice:np.array):
+    # Diagonalizza la matrice.
+    list_autovalori = np.linalg.eigvals(matrice)
+    accu = 0
+    for av in list_autovalori:
+        accu += - av * logC(av)
+    return np.real(accu)

@@ -77,7 +77,7 @@ class walker:
         # print("WK: Estratto valore ", x, " da misura.")
         return x
 
-    def ottieni_distribuzione_probabilita(self):
+    def ottieni_distribuzione_probabilita(self, verboso=False):
         # Calcola la ddp associata alle posizioni correnti.
         distribuzione = np.zeros(self.anello_ospite.numero_punti)
         for k in range(0, self.anello_ospite.numero_punti):
@@ -86,5 +86,7 @@ class walker:
             proj_posizione = np.outer(vettore_posizioni, vettore_posizioni)
             proj_tot_posizione = np.kron(proj_posizione, np.eye(2))
             distribuzione[k] = pow(np.linalg.norm(proj_tot_posizione.dot(self.stato_totale)),2)
+            if verboso:
+                print("[QRW]: calcolato contributo ddp per punto ", k)
         return distribuzione, max(distribuzione)
 
