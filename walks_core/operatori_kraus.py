@@ -3,7 +3,7 @@
 # Il canale è descritto dalla classe astratta canale.
 
 import numpy as np
-import matrici_pauli as mp
+from walks_core import matrici_pauli as mp
 import abc
 
 class canale:

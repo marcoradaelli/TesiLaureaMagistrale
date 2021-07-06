@@ -80,3 +80,7 @@ plt.show()
 
 circ.draw(output="mpl")
 plt.show()
+
+
+# Controlled gates su Qiskit!
+# https://qiskit.org/documentation/stubs/qiskit.circuit.ControlledGate.html
