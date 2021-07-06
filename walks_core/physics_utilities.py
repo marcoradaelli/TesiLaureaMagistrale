@@ -117,3 +117,28 @@ def entropia_von_neumann(matrice:np.array):
     for av in list_autovalori:
         accu += - av * logC(av)
     return np.real(accu)
+
+def taglia_ddp_in_base_a_devstd(ddp: list, dist: float) -> np.array:
+    # La distanza va passata in unità di devstd.
+    valore_medio = media(ddp)
+    deviazione = devstd(ddp)
+
+    # Individuo gli estremi del taglio.
+    estremo_sinistro = valore_medio - dist*deviazione
+    estremo_destro = valore_medio + dist*deviazione
+
+    # Valuto di non essere uscito dalla ddp.
+    if estremo_sinistro < 0 or estremo_destro > len(ddp):
+        raise Exception("Uscito dagli estremi della distribuzione,")
+
+    # Procedo a copiare solo la parte di distribuzione all'interno del limite.
+    nuova_ddp = np.zeros(len(ddp))
+    for x in range(len(ddp)):
+        if estremo_sinistro <= x <= estremo_destro:
+            nuova_ddp[x] = ddp[x]
+
+    # Rinormalizzo la distribuzione ottenuta.
+    totale = np.sum(nuova_ddp)
+    nuova_ddp = nuova_ddp/totale
+
+    return nuova_ddp

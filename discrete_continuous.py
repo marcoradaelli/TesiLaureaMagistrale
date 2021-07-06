@@ -3,7 +3,7 @@ from Grafi import grafi
 import numpy as np
 from matplotlib import pyplot as plt
 
-def ottieni_fattore_conversione(numero_passi_massimo=30,tempo_minimo=0, tempo_massimo=10, tempo_step=0.1):
+def ottieni_fattore_conversione(numero_passi_massimo=30,tempo_minimo=0, tempo_massimo=10, tempo_step=0.1, disegna_grafici=True):
     vett_numero_passi = []
     vett_tempi_fidelity_massima = []
     vett_fidelity_massime = []
@@ -47,21 +47,24 @@ def ottieni_fattore_conversione(numero_passi_massimo=30,tempo_minimo=0, tempo_ma
         stima_durata_passo = tempo_fidelity_massima / numero_passi_discreto
         print("Numero passi: ", numero_passi_discreto, "; Stima durata di un passo: ", stima_durata_passo)
 
-    plt.plot(vett_numero_passi,vett_tempi_fidelity_massima)
     polinomio_fit = np.polyfit(vett_numero_passi, vett_tempi_fidelity_massima,1)
     print(polinomio_fit)
     trend_polinomio = np.poly1d(polinomio_fit)
-    plt.plot(vett_numero_passi,trend_polinomio(vett_numero_passi))
-    plt.title("Discrete-continuous relation")
-    plt.xlabel("Number of discrete steps")
-    plt.ylabel("Continuous time")
-    plt.show()
 
-    plt.plot(vett_numero_passi,vett_fidelity_massime)
-    plt.title("Maximal fidelity")
-    plt.xlabel("Number of discrete steps")
-    plt.ylabel("Fidelity")
-    plt.show()
+    # Sistema di disegno (che può essere spento).
+    if disegna_grafici:
+        plt.plot(vett_numero_passi,vett_tempi_fidelity_massima)
+        plt.plot(vett_numero_passi,trend_polinomio(vett_numero_passi))
+        plt.title("Discrete-continuous relation")
+        plt.xlabel("Number of discrete steps")
+        plt.ylabel("Continuous time")
+        plt.show()
+
+        plt.plot(vett_numero_passi,vett_fidelity_massime)
+        plt.title("Maximal fidelity")
+        plt.xlabel("Number of discrete steps")
+        plt.ylabel("Fidelity")
+        plt.show()
 
     return trend_polinomio.coefficients[0]
 

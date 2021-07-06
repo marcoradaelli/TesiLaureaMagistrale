@@ -11,7 +11,7 @@ class anello:
         # print("AN: Creato anello di ", self.numero_punti, " punti.")
 
 class walker:
-    def __init__(self, anello_ospite, posizione_iniziale, moneta_iniziale):
+    def __init__(self, anello_ospite, posizione_iniziale, moneta_iniziale, tipo_moneta="unbiased"):
         # L'anello va passato come oggetto.
         self.anello_ospite = anello_ospite
 
@@ -51,7 +51,10 @@ class walker:
         theta = np.pi / 4
 
         # Unitaria di coin flip.
-        coin_flip = np.cos(theta) * proj_up - 1j * np.sin(theta) * mix_up_down - 1j * np.sin(theta) * mix_down_up + np.cos( theta) * proj_down
+        if tipo_moneta == "unbiased":
+            coin_flip = np.cos(theta) * proj_up - 1j * np.sin(theta) * mix_up_down - 1j * np.sin(theta) * mix_down_up + np.cos( theta) * proj_down
+        elif tipo_moneta == "hadamard":
+            coin_flip = 1/np.sqrt(2) * (proj_up + mix_down_up + mix_up_down - proj_down)
         total_coin_flip = np.kron(np.eye(self.anello_ospite.numero_punti), coin_flip)
 
         self.operatore_passo = conditional_shift.dot(total_coin_flip)
