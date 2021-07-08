@@ -10,7 +10,7 @@ moneta_iniziale = np.array([np.cos(np.pi / 4), np.sin(np.pi / 4) * np.exp(1j * 0
 
 lista_parametri = np.arange(0,.5,.1)
 for parametro in lista_parametri:
-    kraus = kr.phase_flip(parametro,dimensione_anello)
+    kraus = kr.bit_phase_flip(parametro,dimensione_anello)
     lista_kraus = kraus.lista_operatori_kraus()
     w = qrw.walker(a,numero_step + 1,moneta_iniziale,lista_kraus)
     vett_shannon = []
@@ -23,6 +23,6 @@ for parametro in lista_parametri:
     plt.plot(vett_shannon, label="$p$ = " + str(parametro))
 plt.xlabel("Steps")
 plt.ylabel("Shannon entropy")
-plt.title("Shannon entropy vs steps with phase-flip")
-plt.legend(title="Phase-flip probability")
+plt.title("Shannon entropy vs steps with bit-phase-flip")
+plt.legend(title="bit-phase-flip probability")
 plt.show()
