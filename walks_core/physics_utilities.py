@@ -67,7 +67,7 @@ def kolmogorov_distance(d1:list, d2:list) -> float:
     for i in range(len(d1)):
         accu += np.abs(d1[i] - d2[i])
 
-    return accu
+    return .5 * accu
 
 def media(ddp: list) -> float:
     accu = 0
