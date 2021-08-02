@@ -53,11 +53,17 @@ def ottieni_fattore_conversione(numero_passi_massimo=30,tempo_minimo=0, tempo_ma
 
     # Sistema di disegno (che può essere spento).
     if disegna_grafici:
-        plt.plot(vett_numero_passi,vett_tempi_fidelity_massima)
+        plt.plot(vett_numero_passi,vett_tempi_fidelity_massima,marker="+",markersize=15, linestyle="None")
         plt.plot(vett_numero_passi,trend_polinomio(vett_numero_passi))
         plt.title("Discrete-continuous relation")
         plt.xlabel("Number of discrete steps")
         plt.ylabel("Continuous time")
+
+        a = plt.axes([0.25, 0.6, .2, .2])
+        plt.title("Maximal fidelity")
+        plt.xlabel("Steps")
+        plt.ylabel("Fidelity")
+        plt.plot(vett_numero_passi, vett_fidelity_massime)
         plt.show()
 
         plt.plot(vett_numero_passi,vett_fidelity_massime)
@@ -68,4 +74,4 @@ def ottieni_fattore_conversione(numero_passi_massimo=30,tempo_minimo=0, tempo_ma
 
     return trend_polinomio.coefficients[0]
 
-# ottieni_fattore_conversione()
+ottieni_fattore_conversione()

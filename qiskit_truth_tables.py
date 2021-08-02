@@ -28,6 +28,9 @@ incrementer.cx(1, 2)
 incrementer.cx(0, 1)
 incrementer.x(0)
 
+incrementer.draw(output="mpl")
+plt.show()
+
 # Trasformo l'incrementer in un gate.
 gate_incrementer = incrementer.to_gate()
 # Versione controlled.
@@ -49,6 +52,9 @@ decrementer.ccx(1, 2, 3)
 decrementer.x(2)
 decrementer.cx(1, 2)
 decrementer.cx(0, 1)
+
+decrementer.draw(output="mpl")
+plt.show()
 
 gate_decrementer = decrementer.to_gate()
 

@@ -70,7 +70,9 @@ class walker:
         self.matrice_densita = accu_matrice_densita
 
         # Applica l'evoluzione unitaria.
-        self.matrice_densita = self.operatore_passo.dot(self.matrice_densita.dot(self.operatore_passo.conj().T))
+        operatore_passo_daga = self.operatore_passo.conj().T
+        self.matrice_densita = self.operatore_passo.dot(self.matrice_densita.dot(operatore_passo_daga))
+        return self.matrice_densita
 
     def esegui_misura(self) -> float:
         # Kernel del Montecarlo. Uso una tecnica accept-reject.
@@ -99,3 +101,6 @@ class walker:
             distribuzione[k] = np.trace(proj_tot_posizione.dot(self.matrice_densita))
         return distribuzione, max(distribuzione)
 
+    def ottieni_distribuzione_probabilita_con_coin(self) -> (np.array,float):
+        diag = np.real(np.diagonal(self.matrice_densita))
+        return diag, max(diag)

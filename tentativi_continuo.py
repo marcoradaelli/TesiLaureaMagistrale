@@ -1,5 +1,5 @@
 import discrete_continuous as dc
-from walks_core import qrw_continuous, physics_utilities
+from walks_core import qrw_continuous, physics_utilities, qrw, anello
 import numpy as np
 from Grafi import grafi
 from matplotlib import pyplot as plt
@@ -78,6 +78,7 @@ cutoff = 1.3 # In unità di sigma.
 vett_posizione_corni = []
 vett_devstd = []
 vett_entro_cutoff = []
+
 for tempo in rete_tempi:
     ddp_a_tempo = w.ottieni_distribuzione_probabilita_a_tempo(tempo)
     massimo = max(ddp_a_tempo)

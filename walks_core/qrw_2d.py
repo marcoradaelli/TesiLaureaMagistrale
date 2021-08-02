@@ -79,7 +79,7 @@ class walker:
 
     def passo(self):
         self.stato_totale = self.operatore_passo.dot(self.stato_totale)
-        print("WK: norma del vettore stato ", np.linalg.norm(self.stato_totale))
+        # print("WK: norma del vettore stato ", np.linalg.norm(self.stato_totale))
         # print("WK: Eseguito passo.")
 
     def esegui_misura(self):
@@ -103,7 +103,7 @@ class walker:
         # Calcola la ddp associata alle posizioni correnti.
         distribuzione = np.zeros((self.numero_punti_per_dimensione, self.numero_punti_per_dimensione))
         for orizzontale in range(0, self.numero_punti_per_dimensione):
-            print("Avvio calcoli riga ", orizzontale)
+            # print("Avvio calcoli riga ", orizzontale)
             for verticale in range(0, self.numero_punti_per_dimensione):
                 # print("Avvio calcoli colonna ", verticale)
                 # Costruisco il proiettore sullo stato.

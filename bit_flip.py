@@ -2,7 +2,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from walks_core import qrw_density_matrix as qrw, operatori_kraus as kr, anello, physics_utilities as phu
 
-numero_step = 100
+numero_step = 50
 dimensione_anello = numero_step * 2 + 2
 a = anello.anello(dimensione_anello)
 
@@ -20,9 +20,9 @@ for parametro in lista_parametri:
         entropia = phu.entropia_shannon(ddp)
         vett_shannon.append(entropia)
         print("Fatto passo ", passo, " per parametro ", parametro)
-    plt.plot(vett_shannon, label="$p$ = " + str(parametro))
+    plt.plot(vett_shannon, label="$p$ = " + "{:.1f}".format(parametro))
 plt.xlabel("Steps")
 plt.ylabel("Shannon entropy")
-plt.title("Shannon entropy vs steps with bit-phase-flip")
-plt.legend(title="bit-phase-flip probability")
+plt.title(f"Shannon entropy vs steps with {kraus.ottieni_nome()}")
+plt.legend(title=f"{kraus.ottieni_nome()} probability")
 plt.show()

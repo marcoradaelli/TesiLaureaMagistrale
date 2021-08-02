@@ -13,6 +13,10 @@ class canale:
     def lista_operatori_kraus(self) -> list:
         pass
 
+    @abc.abstractmethod
+    def ottieni_nome(self) -> str:
+        pass
+
 class canale_depolarizzatore(canale):
     def __init__(self, parametro: float, dimensioni_anello: int):
         super().__init__(dimensioni_anello)
@@ -34,6 +38,9 @@ class canale_depolarizzatore(canale):
 
         return [kr1, kr2, kr3, kr4]
 
+    def ottieni_nome(self) -> str:
+        return "depolarizing channel"
+
 class bit_flip(canale):
     def __init__(self, parametro: float, dimensioni_anello:int):
         self.dimensioni_anello = dimensioni_anello
@@ -48,6 +55,9 @@ class bit_flip(canale):
         kr1 = np.kron(np.eye(self.dimensioni_anello),kr1)
 
         return [kr0, kr1]
+
+    def ottieni_nome(self) -> str:
+        return "bit-flip"
 
 
 class phase_flip(canale):
@@ -65,6 +75,9 @@ class phase_flip(canale):
 
         return [kr0, kr1]
 
+    def ottieni_nome(self) -> str:
+        return "phase-flip"
+
 class bit_phase_flip(canale):
     def __init__(self, parametro: float, dimensioni_anello: int):
         self.dimensioni_anello = dimensioni_anello
@@ -79,3 +92,6 @@ class bit_phase_flip(canale):
         kr1 = np.kron(np.eye(self.dimensioni_anello), kr1)
 
         return [kr0, kr1]
+
+    def ottieni_nome(self) -> str:
+        return "bit-phase-flip"

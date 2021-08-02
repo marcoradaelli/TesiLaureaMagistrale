@@ -111,7 +111,6 @@ def distribuzione_uniforme_in_intervallo(dim:int, intervallo:tuple) -> np.array:
     return ddp
 
 def entropia_von_neumann(matrice:np.array):
-    # Diagonalizza la matrice.
     list_autovalori = np.linalg.eigvals(matrice)
     accu = 0
     for av in list_autovalori:
@@ -142,3 +141,11 @@ def taglia_ddp_in_base_a_devstd(ddp: list, dist: float) -> np.array:
     nuova_ddp = nuova_ddp/totale
 
     return nuova_ddp
+
+def purezza(matrice: np.array):
+    return np.real(np.trace(matrice.dot(matrice)))
+
+def traccia_parziale_coin(matrice:np.array):
+    dimensioni_posizione = int(np.shape(matrice)[0] / 2)
+    md_reshaped = matrice.reshape(dimensioni_posizione, 2, dimensioni_posizione, 2)
+    return np.trace(md_reshaped, axis1=1, axis2=3)
